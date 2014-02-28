@@ -5,7 +5,7 @@ namespace LevelUp.Presentation1.Example2
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var executor = new Executor();
             const int loop = 0xFFFFFFF;

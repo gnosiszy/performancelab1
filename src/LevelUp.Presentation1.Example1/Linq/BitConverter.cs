@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Opt4
+namespace LevelUp.Presentation1.Example1.Linq
 {
     public static class BitConverter
     {

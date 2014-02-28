@@ -13,39 +13,40 @@ namespace LevelUp.Presentation1.Example1
             random.NextBytes(value);
 
             var executor = new Executor();
-            const int loop = 0xFFFFFF;
+            const int loop = 0xFFFFF;
 
-            Console.Write(BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => BitConverter.ToString(value), loop));
+            var actions = new Func<byte[], string>[]
+            {
+                BitConverter.ToString,
+                Mono.BitConverter.ToString,
+                MonoOptmz.BitConverter.ToString,
+                LinqFake1.BitConverter.ToString,
+                LinqFake2.BitConverter.ToString,
+                Linq.BitConverter.ToString,
+                Optmz1.BitConverter.ToString,
+                Optmz2.BitConverter.ToString,
+                Optmz3.BitConverter.ToString,
+                Unsafe.BitConverter.ToString,
+            };
 
-            Console.Write(Mono.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Mono.BitConverter.ToString(value), loop));
+            foreach (var action in actions)
+            {
+                var toString = action;
 
-            Console.Write(Opt1.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt1.BitConverter.ToString(value), loop));
-            
-            Console.Write(Opt2.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt2.BitConverter.ToString(value), loop));
+                Console.ForegroundColor = ConsoleColor.DarkRed;
 
-            Console.Write(Opt3.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt3.BitConverter.ToString(value), loop));
+                // ReSharper disable once PossibleNullReferenceException
+                Console.WriteLine(action.Method.DeclaringType.FullName);
 
-            Console.Write(Opt4.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt4.BitConverter.ToString(value), loop));
+                Console.ForegroundColor = ConsoleColor.White;
 
-            Console.Write(Opt5.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt5.BitConverter.ToString(value), loop));
-
-            Console.Write(Opt6.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt6.BitConverter.ToString(value), loop));
+                Console.Write('\t');
+                Console.Write(toString(value));
+                Console.Write('\t');
+                Console.Write(executor.OptmzLoop(() => toString(value), loop));
+                Console.Write('\t');
+                Console.WriteLine(executor.TimeLoop(() => toString(value), 1000));
+            }
 
             Console.Read();
         }

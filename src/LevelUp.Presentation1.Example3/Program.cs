@@ -5,7 +5,7 @@ namespace LevelUp.Presentation1.Example3
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var value = new byte[8];
             var random = new Random();
@@ -15,13 +15,21 @@ namespace LevelUp.Presentation1.Example3
             var executor = new Executor();
             const int loop = 0xFFFFF;
 
-            Console.Write(Opt1.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt1.BitConverter.ToString(value), loop));
+            var actions = new Func<byte[], string>[]
+            {
+                BitConverter.ToString,
+                Opt1.BitConverter.ToString,
+                Opt2.BitConverter.ToString,
+            };
 
-            Console.Write(Opt2.BitConverter.ToString(value));
-            Console.Write('\t');
-            Console.WriteLine(executor.Loop(() => Opt2.BitConverter.ToString(value), loop));
+            foreach (var action in actions)
+            {
+                var toString = action;
+
+                Console.Write(toString(value));
+                Console.Write('\t');
+                Console.WriteLine(executor.OptmzLoop(() => toString(value), loop));
+            }
 
             Console.Read();
         }

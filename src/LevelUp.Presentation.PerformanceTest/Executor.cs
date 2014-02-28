@@ -1,10 +1,36 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace LevelUp.Presentation.PerformanceTest
 {
     public class Executor
     {
+        public int TimeLoop(Action action, double time)
+        {
+            return TimeLoop(action, TimeSpan.FromMilliseconds(time));
+        }
+
+        public int TimeLoop(Action action, TimeSpan time)
+        {
+            var i = 0;
+            var abort = false;
+            var thread = new Thread(() =>
+            {
+                while (!abort)
+                {
+                    action();
+                    ++i;
+                }
+            });
+
+            thread.Start();
+            Thread.Sleep(time);
+            abort = true;
+
+            return i;
+        }
+
         public TimeSpan Loop(Action action, long loops)
         {
             var watcher = new Stopwatch();

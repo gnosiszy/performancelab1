@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Opt1
+namespace LevelUp.Presentation1.Example1.MonoOptmz
 {
     public static class BitConverter
     {

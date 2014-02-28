@@ -1,10 +1,24 @@
 ﻿using System;
 
-namespace Opt3
+namespace LevelUp.Presentation1.Example1.Optmz1
 {
     public static class BitConverter
     {
-        const string HexValue = "0123456789ABCDEF";
+        const char AlphaValue = (char)('A' - 10);
+
+        private static char ToChar(int value)
+        {
+            if (value < 10)
+            {
+                value += '0';
+            }
+            else
+            {
+                value += AlphaValue;
+            }
+
+            return (char)value;
+        }
 
         public static string ToString(byte[] value)
         {
@@ -21,11 +35,9 @@ namespace Opt3
                 }
 
                 var ch = value[i];
-                var high = ch >> 4;
-                var low = ch & 0x0F;
 
-                output[index + 1] = HexValue[high];
-                output[index + 2] = HexValue[low];
+                output[index + 1] = ToChar(ch >> 4);
+                output[index + 2] = ToChar(ch & 0x0F);
             }
 
             return new String(output);

@@ -43,13 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Opt6\BitConverter.cs" />
-    <Compile Include="Opt5\BitConverter.cs" />
-    <Compile Include="Opt4\BitConverter.cs" />
+    <Compile Include="Unsafe\BitConverter.cs" />
+    <Compile Include="LinqFake2\BitConverter.cs" />
+    <Compile Include="LinqFake1\BitConverter.cs" />
+    <Compile Include="Linq\BitConverter.cs" />
     <Compile Include="Mono\BitConverter.cs" />
-    <Compile Include="Opt1\BitConverter.cs" />
-    <Compile Include="Opt2\BitConverter.cs" />
-    <Compile Include="Opt3\BitConverter.cs" />
+    <Compile Include="MonoOptmz\BitConverter.cs" />
+    <Compile Include="Optmz3\BitConverter.cs" />
+    <Compile Include="Optmz2\BitConverter.cs" />
+    <Compile Include="Optmz1\BitConverter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Opt5
+namespace LevelUp.Presentation1.Example1.LinqFake1
 {
     public static class BitConverter
     {
