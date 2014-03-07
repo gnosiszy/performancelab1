@@ -77,5 +77,48 @@ namespace LevelUp.Presentation.PerformanceTest
 
             return watcher.Elapsed;
         }
+
+        public TimeSpan AsyncLoop(Action action, long loops)
+        {
+            return AsyncLoop(action, loops, 4);
+        }
+
+        public TimeSpan AsyncLoop(Action action, long loops, int threadCount)
+        {
+            var watcher = new Stopwatch();
+
+            watcher.Start();
+
+            var threads = new Thread[threadCount];
+            var optmzLoop = loops - (loops % threadCount);
+            var length = optmzLoop / threadCount;
+
+            for (var i = 0; i < threadCount; i++)
+            {
+                threads[i] = new Thread(() =>
+                {
+                    for (var j = 0; j < length; j++)
+                    {
+                        action();
+                    }
+                });
+
+                threads[i].Start();
+            }
+
+            for (var i = 0; i < threadCount; i++)
+            {
+                threads[i].Join();
+            }
+
+            for (var i = optmzLoop; i < loops; i++)
+            {
+                action();
+            }
+
+            watcher.Stop();
+
+            return watcher.Elapsed;
+        }
     }
 }

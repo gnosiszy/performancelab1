@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Unsafe\BitConverter.cs" />
+    <Compile Include="Unsafe3\BitConverter.cs" />
+    <Compile Include="Unsafe2\BitConverter.cs" />
+    <Compile Include="LinqFake3\BitConverter.cs" />
+    <Compile Include="Unsafe1\BitConverter.cs" />
     <Compile Include="LinqFake2\BitConverter.cs" />
     <Compile Include="LinqFake1\BitConverter.cs" />
     <Compile Include="Linq\BitConverter.cs" />

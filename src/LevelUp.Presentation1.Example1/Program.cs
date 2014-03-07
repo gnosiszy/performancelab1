@@ -1,5 +1,6 @@
 ﻿using LevelUp.Presentation.PerformanceTest;
 using System;
+using System.Linq;
 
 namespace LevelUp.Presentation1.Example1
 {
@@ -22,33 +23,59 @@ namespace LevelUp.Presentation1.Example1
                 MonoOptmz.BitConverter.ToString,
                 LinqFake1.BitConverter.ToString,
                 LinqFake2.BitConverter.ToString,
+                LinqFake3.BitConverter.ToString,
                 Linq.BitConverter.ToString,
                 Optmz1.BitConverter.ToString,
                 Optmz2.BitConverter.ToString,
                 Optmz3.BitConverter.ToString,
-                Unsafe.BitConverter.ToString,
+                Unsafe1.BitConverter.ToString,
+                Unsafe2.BitConverter.ToString,
+                Unsafe3.BitConverter.ToString,
             };
 
-            foreach (var action in actions)
+            // ReSharper disable once PossibleNullReferenceException
+            foreach (var order in actions.Select(toString => new BitConverterOrder()
             {
-                var toString = action;
-
+                Value = toString(value),
+                Name = toString.Method.DeclaringType.FullName,
+                Loop = executor.Loop(() => toString(value), loop),
+                AsyncLoop = executor.AsyncLoop(() => toString(value), loop),
+                OptmzLoop = executor.OptmzLoop(() => toString(value), loop),
+                TimeLoop = executor.TimeLoop(() => toString(value), 1000),
+            })
+                .OrderBy(item => item.TimeLoop)
+            )
+            {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                // ReSharper disable once PossibleNullReferenceException
-                Console.WriteLine(action.Method.DeclaringType.FullName);
+                Console.WriteLine(order.Name);
 
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.Write('\t');
-                Console.Write(toString(value));
+                Console.Write(order.Value);
                 Console.Write('\t');
-                Console.Write(executor.OptmzLoop(() => toString(value), loop));
                 Console.Write('\t');
-                Console.WriteLine(executor.TimeLoop(() => toString(value), 1000));
+                Console.Write(order.Loop);
+                Console.Write('\t');
+                Console.Write(order.AsyncLoop);
+                Console.Write('\t');
+                Console.Write(order.OptmzLoop);
+                Console.Write('\t');
+                Console.WriteLine(order.TimeLoop);
             }
 
             Console.Read();
         }
+    }
+
+    class BitConverterOrder
+    {
+        public string Value;
+        public string Name;
+        public TimeSpan Loop;
+        public TimeSpan AsyncLoop;
+        public TimeSpan OptmzLoop;
+        public long TimeLoop;
     }
 }

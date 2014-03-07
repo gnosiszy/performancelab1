@@ -7,28 +7,26 @@ namespace LevelUp.Presentation1.Example3
     {
         static void Main()
         {
-            var value = new byte[8];
-            var random = new Random();
-
-            random.NextBytes(value);
+            const int loop = 0xFFFFFF;
+            const string n = "34985";
 
             var executor = new Executor();
-            const int loop = 0xFFFFF;
 
-            var actions = new Func<byte[], string>[]
+            var actions = new Func<int>[]
             {
-                BitConverter.ToString,
-                Opt1.BitConverter.ToString,
-                Opt2.BitConverter.ToString,
+                () => Convert.ToInt32(n),
+                () => int.Parse(n),
             };
 
             foreach (var action in actions)
             {
-                var toString = action;
+                var run = action;
 
-                Console.Write(toString(value));
+                Console.Write(executor.OptmzLoop(() => run(), loop));
                 Console.Write('\t');
-                Console.WriteLine(executor.OptmzLoop(() => toString(value), loop));
+                Console.Write(executor.AsyncLoop(() => run(), loop));
+                Console.Write('\t');
+                Console.WriteLine(executor.TimeLoop(() => run(), 1000));
             }
 
             Console.Read();
